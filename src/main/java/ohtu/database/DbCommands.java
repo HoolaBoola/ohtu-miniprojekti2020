@@ -1,6 +1,7 @@
 package ohtu.database;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import ohtu.domain.Blog;
@@ -149,6 +150,22 @@ public class DbCommands {
     public ArrayList<Blog> listBlog() {
         ArrayList<Blog> blogs = new ArrayList<>();
 
+        try {
+            ResultSet r = s.executeQuery("SELECT * FROM Blogs");
+
+            while (r.next()) {
+                Blog blog = new Blog(
+                    r.getString("url"),
+                    r.getString("title"),
+                    r.getString("writer"),
+                    r.getDate("date").toLocalDate()
+                );
+
+                blogs.add(blog);
+            }
+        } catch (Exception ignored) {
+        }
+        
         return blogs;
     }
 

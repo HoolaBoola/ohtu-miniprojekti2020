@@ -154,6 +154,7 @@ public class UserInterface {
         try {
             year = Integer.parseInt(br.readLine());
         } catch (NumberFormatException ignored) {
+            System.out.println("Non-integer argument, no year added");
         }
 
         System.out.println("Enter pages: ");
@@ -161,6 +162,7 @@ public class UserInterface {
         try {
             pages = Integer.parseInt(br.readLine());
         } catch (NumberFormatException ignored) {
+            System.out.println("Non-integer argument, no page count added");
         }
 
         System.out.println("Enter ISBN: ");
@@ -232,9 +234,15 @@ public class UserInterface {
         if (dateInput.isBlank()) {
             date = LocalDate.now();
         } else {
-            List<Integer> dateArray = Arrays.stream(dateInput.split("-"))
+            try {
+                List<Integer> dateArray = Arrays.stream(dateInput.split("-"))
                     .map(Integer::parseInt).collect(Collectors.toList());
-            date = LocalDate.of(dateArray.get(0), dateArray.get(1), dateArray.get(2));
+                date = LocalDate.of(dateArray.get(0), dateArray.get(1), dateArray.get(2));
+            } catch (NumberFormatException e) {
+                System.out.println("Date incorrectly formatted! Added current date instead. \n");
+                date = LocalDate.now();
+
+            }
         }
 
         return new Blog(url, title, writer, date);
